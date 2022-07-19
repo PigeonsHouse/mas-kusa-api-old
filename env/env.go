@@ -3,6 +3,7 @@ package env
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -33,6 +34,11 @@ func InitEnv() {
 	secretKey := getEnv("SECRET_KEY", "secret")
 
 	SigningKey = []byte(secretKey)
+
+	herokuUrl := getEnv("DATABASE_URL", "")
+	if herokuUrl != "" {
+		formatHerokuDB(herokuUrl)
+	}
 }
 
 func getEnv(key string, fallback string) string {
@@ -40,4 +46,28 @@ func getEnv(key string, fallback string) string {
 		return val
 	}
 	return fallback
+}
+
+func formatHerokuDB(herokuUrl string) {
+	t := strings.Split(herokuUrl, "://")
+	if len(t) != 2 {
+		return
+	}
+	userAnd := strings.Split(t[1], ":")
+	if len(userAnd) != 3 {
+		return
+	}
+	portAndDb := strings.Split(userAnd[2], "/")
+	if len(portAndDb) != 2 {
+		return
+	}
+	passAndHost := strings.Split(userAnd[1], "@")
+	if len(passAndHost) != 2 {
+		return
+	}
+	DbHost = passAndHost[1]
+	DbUser = userAnd[0]
+	DbPass = passAndHost[0]
+	DbName = portAndDb[1]
+	DbPort = portAndDb[0]
 }
