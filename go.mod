@@ -3,6 +3,7 @@ module mas-kusa-api
 go 1.18
 
 require (
+	github.com/cosmtrek/air v1.40.4 // indirect
 	github.com/go-co-op/gocron v1.14.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect

@@ -2,3 +2,4 @@
 .env
 mas-kusa-api
 static/
+tmp/
